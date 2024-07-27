@@ -1,7 +1,5 @@
 import contactsService from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js"
-import createContactSchema from "../schemas/contactsSchemas.js";
-import validateBody from "../helpers/validateBody.js";
 
 export const getAllContacts = async (req, res, next) => {
     try {
@@ -42,20 +40,32 @@ export const getOneContact = async (req, res, next) => {
     }
 };
 
-export const deleteContact = (req, res) => {};
+export const deleteContact = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const result = await contactsService.deleteContact(id);
+
+        // Если контакт не найден
+        if (!result) {
+            throw HttpError(404);
+        };
+
+        // Если контакт найден
+        res.json({
+            status: "success",
+            code: 200,
+            message: "Contact deleted",
+            data: {
+                result
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const createContact = async (req, res, next) => {
     try {
-        // Валидация добавляемого контакта
-        // validateBody(createContactSchema);
-
-        const { error } = createContactSchema.validate(req.body);
-        // Если валидация с ошибками
-        if (error) {
-            error.status = 400;
-            throw error;
-        }
-        // Если валидация успешная
         const result = await contactsService.addContact(req.body);
         res.status(201).json({
             status: "success",
@@ -69,4 +79,35 @@ export const createContact = async (req, res, next) => {
     }
 };
 
-export const updateContact = (req, res) => {};
+export const updateContact = async (req, res, next) => {
+    try {
+        // Если тело запроса пустое
+        const keys = Object.keys(req.body); // Создание массива ключей объекта
+        // Если массив ключей пустой (нет данных для обновления) - выдать ошибку
+        if (keys.length === 0) {
+            const error = new Error("Body must have at least one field");
+            error.status = 400;
+            throw error;
+        };
+
+        // Если тело запроса не пустое
+        const { id } = req.params;
+        const result = await contactsService.updateById(id, req.body);
+
+        // Если контакт не найден
+        if (!result) {
+            throw HttpError(404);
+        };
+
+        // Если контакт найден
+        res.status(200).json({
+            status: "success",
+            code: 200,
+            data: {
+                result
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+};

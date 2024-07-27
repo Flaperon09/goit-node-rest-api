@@ -1,8 +1,5 @@
-// const fs = require("fs/promises"); //Пакет работы с файлами
 import fs from "fs/promises"; //Пакет работы с файлами
-// const path = require("path"); // Пакет работы с путями
 import { join } from "path"; // Пакет работы с путями
-// const { v4 } = require("uuid"); // Импорт генератора случайных чисел "uuid"
 import { v4 } from "uuid"; // Импорт генератора случайных чисел "uuid"
 
 const __dirname = import.meta.dirname;
@@ -39,9 +36,10 @@ async function deleteContact(contactId) {
       return null;
     };
     
-    const [removeContact] = contacts.splice(idx, 1); // Удаление товара
-		await fs.writeFile(contactsPath, JSON.stringify(contacts)); // Перезаписывает список товаров в виде строки
-		return removeContact;
+  // Если результат найден
+  const [removeContact] = contacts.splice(idx, 1); // Удаление товара
+  await fs.writeFile(contactsPath, JSON.stringify(contacts)); // Перезаписывает список товаров в виде строки
+	return removeContact;
 };
 
 async function addContact({ name, email, phone }) {
@@ -53,13 +51,30 @@ async function addContact({ name, email, phone }) {
   return newContact;
 };
 
+async function updateById(id, data) {
+  // Обновление контакта
+  const contacts = await listContact();
+  const idx = contacts.findIndex(item => item.id === id); // Поиск индекса нужного товара
+
+  // Если контакт не найден, то вернуть null
+  if (idx === -1) {
+    return null;
+  };
+  
+  // Если результат найден
+  const oldData = contacts.find(item => item.id === id); // Сохранение предыдущих данных
+  contacts[idx] = { ...oldData, ...data }; // Обновление контакта по индексу в БД
+  await fs.writeFile(contactsPath, JSON.stringify(contacts)); // Перезаписывает список товаров в виде строки
+
+  return contacts[idx];
+}
+
 const contactsServices = {
   listContact,
   getContactById,
   deleteContact,
-  addContact
+  addContact,
+  updateById
 };
 
-// exports.contactsServices = contactsServices;
-// module.export = contactsServices;
 export default contactsServices;
