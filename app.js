@@ -1,5 +1,5 @@
 import express from "express";
-import morgan from "morgan";
+import morgan from "morgan"; // Пакет для сообщения информации  о запросах
 import cors from "cors";
 
 import contactsRouter from "./routes/contactsRouter.js";
