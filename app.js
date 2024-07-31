@@ -4,6 +4,15 @@ import cors from "cors";
 
 import contactsRouter from "./routes/contactsRouter.js";
 
+// === Подключение к базе данных
+import mongoose from "mongoose";
+// Ключ для подключение к БД "db-contacts"
+const DB_HOST = "mongodb+srv://Yurii:testpilot1974@cluster0.ki6kk7o.mongodb.net/db-contacts?retryWrites=true&w=majority&appName=Cluster0";
+// Подключение к БД
+mongoose.connect(DB_HOST)
+  .then(()=> console.log("Database connect success"))
+  .catch(error => console.log(error.message));
+
 const app = express();
 
 app.use(morgan("tiny"));
