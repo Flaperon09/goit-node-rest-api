@@ -6,12 +6,25 @@ import contactsRouter from "./routes/contactsRouter.js";
 
 // === Подключение к базе данных
 import mongoose from "mongoose";
-// Ключ для подключение к БД "db-contacts"
-const DB_HOST = "mongodb+srv://Yurii:testpilot1974@cluster0.ki6kk7o.mongodb.net/db-contacts?retryWrites=true&w=majority&appName=Cluster0";
+// Импорт пакета для работы с переменными окружения
+import dotenv from "dotenv";
+// Вызов метода config у пакета dotenv
+dotenv.config();
+// Импорт ключа к БД "db-contacts" и номера порта из переменной окружения
+const { DB_HOST, PORT = 3000 } = process.env;
 // Подключение к БД
 mongoose.connect(DB_HOST)
-  .then(()=> console.log("Database connect success"))
-  .catch(error => console.log(error.message));
+  .then(() => {
+    console.log("Database connection successful");
+    // Запуск сервера
+    app.listen(PORT, () => {
+      console.log("Server is running. Use our API on port: 3000");
+    });
+  })
+  .catch(error => {
+    console.log(error.message);
+    process.exit(1);
+  });
 
 const app = express();
 
@@ -28,8 +41,4 @@ app.use((_, res) => {
 app.use((err, req, res, next) => {
   const { status = 500, message = "Server error" } = err;
   res.status(status).json({ message });
-});
-
-app.listen(3000, () => {
-  console.log("Server is running. Use our API on port: 3000");
-});
+})
