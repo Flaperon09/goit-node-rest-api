@@ -4,6 +4,7 @@ import { join } from "path"; // Пакет работы с путями
 
 const __dirname = import.meta.dirname;
 const contactsPath = join(__dirname, "../db/contacts.json"); // Нормализация пути к файлу
+// const contactsPath = join(__dirname, "../models/contact.js"); // Нормализация пути к файлу
 
 async function listContact() {
   // ...твій код. Повертає масив контактів.
