@@ -1,9 +1,22 @@
 import Joi from "joi";
 
-export const createContactSchema = Joi.object({
+// Настройки валидатора добавляемого контакта
+const createContactSchema = Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email({ minDomainSegments: 2}).required(),
+    phone: Joi.string().required(),
+});
 
-})
+// Настройки валидатора обновляемого контакта
+const updateContactSchema = Joi.object({
+    name: Joi.string(),
+    email: Joi.string().email({ minDomainSegments: 2}),
+    phone: Joi.string(),
+});
 
-export const updateContactSchema = Joi.object({
+const contactSchema = {
+    createContactSchema,
+    updateContactSchema
+}
 
-})
+export default contactSchema;

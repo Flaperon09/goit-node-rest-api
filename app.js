@@ -12,6 +12,8 @@ import dotenv from "dotenv";
 dotenv.config();
 // Импорт ключа к БД "db-contacts" и номера порта из переменной окружения
 const { DB_HOST, PORT = 3000 } = process.env;
+// 
+mongoose.set("strictQuery", true);
 // Подключение к БД
 mongoose.connect(DB_HOST)
   .then(() => {
