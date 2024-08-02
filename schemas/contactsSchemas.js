@@ -25,6 +25,6 @@ const contactSchema = {
     createContactSchema,
     updateContactSchema,
     updateFavoriteSchema,
-}
+};
 
 export default contactSchema;

@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import schemaErrors from "../helpers/validateSchemaErrors.js";
     
 // Схема контактов
 const contactSchema = new Schema({
@@ -18,17 +19,8 @@ const contactSchema = new Schema({
     },
 }, { versionKey: false });
 
-// Обработка ошибок работы с БД (установка необходимых статусов)
-const HandleErrors = (error, data, next) => {
-    const { name, code } = error;
-    if (name === "MongoServerError" && code === 11000) {
-        error.status = 409;
-    } else {
-        error.status = 400;
-    };
-    next();
-};
-contactSchema.post("save", HandleErrors);
+// Инструкция для contactSchema по обработке ошибок с помощью schemaErrors
+contactSchema.post("save", schemaErrors);
 
 // Модель контактов
 const Contact = model("contact", contactSchema);

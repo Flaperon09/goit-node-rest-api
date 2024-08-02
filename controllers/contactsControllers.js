@@ -1,4 +1,3 @@
-import contactsService from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
 import Contact from "../models/contact.js";
 
@@ -16,8 +15,6 @@ export const getAllContacts = async (req, res, next) => {
 export const getOneContact = async (req, res, next) => {
     try {
         const { id } = req.params; // Получение id контакта
-        // const contact = await contactsService.getContactById(id);
-        // const contact = await Contact.findOne({ _id: id });
         const contact = await Contact.findById(id);
 
         // Если контакт не найден
@@ -35,7 +32,6 @@ export const getOneContact = async (req, res, next) => {
 export const deleteContact = async (req, res, next) => {
     try {
         const { id } = req.params;
-        // const contact = await contactsService.deleteContact(id);
         const contact = await Contact.findByIdAndDelete(id);
 
         // Если контакт не найден
@@ -52,7 +48,6 @@ export const deleteContact = async (req, res, next) => {
 
 export const createContact = async (req, res, next) => {
     try {
-        // const contact = await contactsService.addContact(req.body);
         const contact = await Contact.create(req.body);
         res.status(201).json(contact);
     } catch (error) {
@@ -73,7 +68,6 @@ export const updateContact = async (req, res, next) => {
 
         // Если тело запроса не пустое
         const { id } = req.params;
-        // const contact = await contactsService.updateById(id, req.body);
         const contact = await Contact.findByIdAndUpdate(id, req.body, {new: true});
 
         // Если контакт не найден
@@ -88,7 +82,7 @@ export const updateContact = async (req, res, next) => {
     }
 };
 
-export const updateFavorite = async (req, res, next) => {
+export const updateStatusContact = async (req, res, next) => {
     try {
         // Если тело запроса пустое
         const keys = Object.keys(req.body); // Создание массива ключей объекта
@@ -101,7 +95,6 @@ export const updateFavorite = async (req, res, next) => {
 
         // Если тело запроса не пустое
         const { id } = req.params;
-        // const contact = await contactsService.updateById(id, req.body);
         const contact = await Contact.findByIdAndUpdate(id, req.body, {new: true});
 
         // Если контакт не найден
