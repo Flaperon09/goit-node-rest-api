@@ -6,17 +6,14 @@ import usersRouter from "./routes/usersRouter.js";
 import userRouter from "./routes/userRouter.js";
 import contactsRouter from "./routes/contactsRouter.js";
 
-// === Подключение к базе данных
+// Подключение к базе данных
 import mongoose from "mongoose";
 
-// Импорт пакета для работы с переменными окружения
-import dotenv from "dotenv";
-// Вызов метода config у пакета dotenv
-dotenv.config();
-// Импорт ключа к БД "db-contacts" и номера порта из переменной окружения
-const { DB_HOST, PORT = 3000 } = process.env;
+// === Работа с переменными окружения
+import dotenv from "dotenv"; // Импорт пакета для работы с переменными окружения
+dotenv.config(); // Вызов метода config у пакета dotenv
+const { DB_HOST, PORT = 3000 } = process.env; // Импорт секретного ключа из переменных окружения
 
-// 
 mongoose.set("strictQuery", true);
 // Подключение к БД
 mongoose.connect(DB_HOST)

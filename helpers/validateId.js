@@ -7,7 +7,7 @@ const isValidId = (req, res, next) => {
     const isCorrect = isValidObjectId(id);
     // Если структура id неправильная - выдать ошибку 400
     if (!isCorrect) {
-        const error = HttpError(404);
+        const error = HttpError(400);
         next(error);
     };
     next();

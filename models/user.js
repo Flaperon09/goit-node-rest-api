@@ -8,13 +8,18 @@ const userSchema = Schema({
     },
     email: {
         type: String,
-        require: true,
+        require: [true, 'Email is required'],
         unique: true
     },
     password: {
         type: String,
-        require: true,
+        require: [true, 'Password is required'],
         minlength: 6
+    },
+    subscription: {
+        type: String,
+        enum: ["starter", "pro", "buisness"],
+        default: "starter"
     },
     token: {
         type: String,
