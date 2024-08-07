@@ -9,7 +9,7 @@ import dotenv from "dotenv"; // Импорт пакета для работы с
 dotenv.config(); // Вызов метода config у пакета dotenv
 const { SECRET_KEY } = process.env; // Импорт секретного ключа из переменных окружения
 
-// === Контроллер логирования пользователя
+// === Контроллер авторизации пользователя
 const login = async (req, res) => {
 
     const { email, password } = req.body;
@@ -26,7 +26,7 @@ const login = async (req, res) => {
 
     if (!user) {
         res.status(401).json({
-                "message": "Email or password is wrong"
+            "message": "Email or password is wrong"
         });
         return;
     };
@@ -60,7 +60,9 @@ const login = async (req, res) => {
     };
     // Создаём токен
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
-    // Возвращаем токена
+    // Запись токена в БД
+    await User.findByIdAndUpdate(user._id, { token });
+    // Возвращаем токен
     res.json({
         status: "success",
         code: 200,

@@ -8,15 +8,24 @@ const register = async (req, res) => {
     // === Поиск уже существующего пользователя
     const user = await User.findOne({ email });
     // Если пользователь существует - выдать ошибку
+
+    // if (user) {
+    //     res.status(409).json({
+    //         Status: "409 Conflict",
+    //         ResponseBody: {
+    //             "message": "Email in use"
+    //         }
+    //     });
+    //     return;
+    // };
+
     if (user) {
         res.status(409).json({
-            Status: "409 Conflict",
-            ResponseBody: {
-                "message": "Email in use"
-            }
+            "message": "Email in use"
         });
         return;
     };
+
     // Если такого пользователя нет, то создать его:
     // - Хеширование пароля
     const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -29,7 +38,7 @@ const register = async (req, res) => {
             user: {
                 name,
                 email,
-                "subscription": "starter"
+                subscription: "starter"
             }
         }
     })

@@ -3,16 +3,19 @@ import morgan from "morgan";
 import cors from "cors";
 
 import usersRouter from "./routes/usersRouter.js";
+import userRouter from "./routes/userRouter.js";
 import contactsRouter from "./routes/contactsRouter.js";
 
 // === Подключение к базе данных
 import mongoose from "mongoose";
+
 // Импорт пакета для работы с переменными окружения
 import dotenv from "dotenv";
 // Вызов метода config у пакета dotenv
 dotenv.config();
 // Импорт ключа к БД "db-contacts" и номера порта из переменной окружения
 const { DB_HOST, PORT = 3000 } = process.env;
+
 // 
 mongoose.set("strictQuery", true);
 // Подключение к БД
@@ -37,6 +40,8 @@ app.use(express.json());
 
 // Обработчик запросов авторизации
 app.use("/api/users", usersRouter);
+// Обработчик верификации пользователя
+app.use("/api/user", userRouter);
 // Обработчик запросов контактов
 app.use("/api/contacts", contactsRouter);
 
