@@ -27,7 +27,7 @@ const login = async (req, res) => {
     // Если пароли не совпадают - выдать ошибку
     if (!passCompare) {
         res.status(401).json({
-            "message": "Password is wrong"
+            "message": "Email or password is wrong"
         });
         return;
     };

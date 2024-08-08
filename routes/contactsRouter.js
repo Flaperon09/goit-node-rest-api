@@ -17,14 +17,14 @@ const contactsRouter = express.Router();
 
 contactsRouter.get("/", getCurrentUser, getAllContacts);
 
-contactsRouter.get("/:id", isValidId, getOneContact);
+contactsRouter.get("/:id", getCurrentUser, isValidId, getOneContact);
 
-contactsRouter.delete("/:id", isValidId, deleteContact);
+contactsRouter.delete("/:id", getCurrentUser, isValidId, deleteContact);
 
 contactsRouter.post("/", getCurrentUser, validateBody(contactSchema.createContactSchema), createContact);
 
-contactsRouter.put("/:id", isValidId, validateBody(contactSchema.updateContactSchema), updateContact);
+contactsRouter.put("/:id", getCurrentUser, isValidId, validateBody(contactSchema.updateContactSchema), updateContact);
 
-contactsRouter.patch("/:id/favorite", isValidId, validateBody(contactSchema.updateFavoriteSchema), updateStatusContact);
+contactsRouter.patch("/:id/favorite", getCurrentUser, isValidId, validateBody(contactSchema.updateFavoriteSchema), updateStatusContact);
 
 export default contactsRouter;

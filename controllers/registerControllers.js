@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs"; // Импорт пакета хешировани
 
 const register = async (req, res) => {
     
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
 
     // === Поиск уже существующего пользователя
     const user = await User.findOne({ email });
@@ -18,11 +18,10 @@ const register = async (req, res) => {
     // - Хеширование пароля
     const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
     // - Создание пользователя
-    const result = await User.create({ name, email, password: hashPassword });
+    const result = await User.create({ email, password: hashPassword });
     // - Ответ сервера
     res.status(201).json({
         user: {
-            name,
             email,
             subscription: "starter"
         }

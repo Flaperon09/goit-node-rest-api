@@ -2,10 +2,6 @@ import { Schema, model } from "mongoose";
 
 // Схема регистрации нового пользователя
 const userSchema = Schema({
-    name: {
-        type: String,
-        require: true
-    },
     email: {
         type: String,
         require: [true, 'Email is required'],

@@ -3,7 +3,6 @@ import morgan from "morgan";
 import cors from "cors";
 
 import usersRouter from "./routes/usersRouter.js";
-import userRouter from "./routes/userRouter.js";
 import contactsRouter from "./routes/contactsRouter.js";
 
 // Подключение к базе данных
@@ -36,9 +35,7 @@ app.use(cors());
 app.use(express.json());
 
 // Обработчик запросов авторизации
-app.use("/api/users", usersRouter);
-// Обработчик верификации пользователя
-app.use("/api/user", userRouter);
+app.use("/users", usersRouter);
 // Обработчик запросов контактов
 app.use("/api/contacts", contactsRouter);
 

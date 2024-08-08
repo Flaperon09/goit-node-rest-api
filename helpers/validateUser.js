@@ -1,14 +1,8 @@
 const validateUser = async (req, res) => {
-    const { name, email } = req.user;
+    const { email, subscription } = req.user;
     res.json({
-        status: "succes",
-        code: 200,
-        data: {
-            user: {
-                name,
-                email
-            }
-        }
+        email,
+        subscription
     })
 };
 

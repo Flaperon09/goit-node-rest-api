@@ -36,7 +36,7 @@ const getCurrentUser = async (req, res, next) => {
         next();
     } catch (error) {
         // Ели токен невалидный - выдать ошибку 401
-        if (error.message === "Invalid signature") {
+        if (error.message === "Not authorized") {
             error.status = 401;
         }
         next(error);

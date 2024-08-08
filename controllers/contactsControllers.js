@@ -56,6 +56,17 @@ export const deleteContact = async (req, res, next) => {
 
 export const createContact = async (req, res, next) => {
     try {
+        // Поиск уже существующего контакта
+        const newName = req.body.name;
+        const oldContact = await Contact.find({ name: newName });
+        // Если контакт найден - выдать ошибку
+        if (oldContact.length !== 0) {
+            res.status(409).json({
+                message: "This contact already exists"
+            });
+            return;
+        };
+
         // Определяем пользователя, который добавляет контакт
         const { _id } = req.user;
         // Добавляем id пользователя в созданный контакт
