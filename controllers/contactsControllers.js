@@ -5,7 +5,6 @@ export const getAllContacts = async (req, res, next) => {
     try {
         // Определение id пользователя
         const { _id } = req.user;
-        console.log("id пользователя: ", _id);
 
         // Получение параметров запроса (пагинация)
         const { page = 1, limit = 10 } = req.query;
@@ -28,10 +27,10 @@ export const getOneContact = async (req, res, next) => {
         // Получение id контакта из запроса
         const { id } = req.params; 
         // Получение данных контакта, если он принадлежит пользователю
-        const contact = await Contact.find({ _id: id, owner: _id });
+        const contact = await Contact.findOne({ _id: id, owner: _id });
 
         // Если контакт не найден
-        if ( contact.length === 0) {
+        if ( !contact || contact.length === 0) {
             throw HttpError(404);
         };
 
