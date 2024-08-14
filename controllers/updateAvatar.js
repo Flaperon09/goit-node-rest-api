@@ -1,18 +1,18 @@
 import User from "../models/user.js";
 import { join } from "path"; // Пакет работы с путями к файлам
 import fs from "fs/promises"; // Пакет работы с файлами
-import { error } from "console";
 import resizeImage from "../helpers/resizeImage.js";
+import HttpError from "../helpers/HttpError.js";
 
 // Путь к папке avatars
 const __dirname = import.meta.dirname;
 const avatarsDir = join(__dirname, "../public/avatars");
 
 const updateAvatar = async (req, res) => {
-    // Если загружаемый файл не найден
+    // Если загружаемый файл не найден - выдать ошибку
     if (!req.file) {
-        res.json({ message: "File not found" });
-        throw error;
+        res.status(404).json({ message: "File not found" });
+        return;
     };
 
     // Получение пути к временной папке и оригинального имени файла
@@ -35,7 +35,7 @@ const updateAvatar = async (req, res) => {
         await fs.rename(tempUpload, resultUpload);
 
         // Получение URL аватара
-        const avatarURL = join("public", "avatars", avatarName);
+        const avatarURL = join("avatars", avatarName);
 
         // Сохранение нового аватара
         await User.findByIdAndUpdate(req.user._id, { avatarURL });
@@ -46,8 +46,7 @@ const updateAvatar = async (req, res) => {
     } catch (error) {
         // Если файл не перемещён - удалить его из временной папки
         await fs.unlink(tempUpload);
-        // throw error;
-        throw HttpError(401);
+        throw HttpError(404);
     }
 };
  export default updateAvatar
