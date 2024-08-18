@@ -12,10 +12,11 @@ const login = async (req, res) => {
 
     const { email, password } = req.body;
 
-    // ===Поиск уже существующего пользователя по email
+    // === Поиск уже существующего пользователя по email
     const user = await User.findOne({ email });
     // Если пользователь не существует - выдать ошибку
-    if (!user) {
+    // if (!user) {
+    if (!user || !user.verify) {
         res.status(401).json({
             "message": "Email or password is wrong"
         });
